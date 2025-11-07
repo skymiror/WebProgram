@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>伴旅 - 登录你的旅行账号</title>
+    <!-- 引入图标库（与注册页一致） -->
+    <link rel="stylesheet" href="./css/login.css">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style> </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <!-- 品牌标识（与注册页一致） -->
+        <div class="brand-header">
+            <div class="brand-logo">
+                <i class="fa-solid fa-mountain-sun"></i>
+            </div>
+            <h1 class="brand-name">伴旅</h1>
+            <p class="brand-slogan">陪你走遍山川湖海，遇见同行伙伴</p>
+        </div>
+
+        <form id="loginForm" action="http://localhost:8080/demo/Login" method="post">
+            <!-- 账号输入 -->
+            <div class="form-group">
+                <label for="account">旅行账号</label>
+                <div class="icon-wrapper">
+                    <i class="fa-solid fa-user-tag"></i>
+                </div>
+                <input type="text" id="account" name="account" placeholder="输入6位旅行账号" maxlength="6" required>
+                <span class="error-message" id="accountError"><i class="fa-solid fa-circle-exclamation"></i></span>
+            </div>
+
+            <!-- 密码输入 -->
+            <div class="form-group">
+                <label for="password">登录密码</label>
+                <div class="icon-wrapper">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <input type="password" id="password" name="password" placeholder="输入登录密码" required
+                    autocomplete="current-password">
+                <span class="error-message" id="passwordError"><i class="fa-solid fa-circle-exclamation"></i></span>
+            </div>
+
+            <!-- 忘记密码链接（跳转至独立页面） -->
+            <a href="forget-password.html" class="forget-password">忘记密码？</a>
+
+            <button type="submit" class="login-btn">登录伴旅</button>
+
+            <!-- 注册链接 -->
+            <div class="register-link">
+                还没有账号？<a href="register.html">立即注册</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 登录表单元素
+            const loginForm = document.getElementById('loginForm');
+            const accountInput = document.getElementById('account');
+            const passwordInput = document.getElementById('password');
+            const accountError = document.getElementById('accountError');
+            const passwordError = document.getElementById('passwordError');
+
+            // 登录表单提交验证
+            loginForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                let isValid = true;
+
+                const account = accountInput.value.trim();
+                const password = passwordInput.value;
+
+                // 账号验证（6位）
+                if (account.length !== 6) {
+                    accountError.textContent = "账号必须为6位";
+                    isValid = false;
+                } else {
+                    accountError.textContent = "";
+                }
+
+                // 密码验证（至少6位）
+                if (password.length < 6) {
+                    passwordError.textContent = "密码至少6位";
+                    isValid = false;
+                } else {
+                    passwordError.textContent = "";
+                }
+
+                // 验证通过：提交登录请求
+                if (isValid) {
+                    const loginData = {
+                        account: account,
+                        password: password
+                    };
+
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', 'http://localhost:8080/demo/Login');
+                    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                const res = JSON.parse(xhr.responseText);
+                                alert(`🎉 登录成功！欢迎回来，${res.username}～ 准备开启新旅程吧！`);
+                                // 跳转至首页（根据需求修改）
+                                window.location.href = "main.html";
+                            } else {
+                                let errorMsg = "登录失败，请检查账号密码";
+                                try {
+                                    const res = JSON.parse(xhr.responseText);
+                                    errorMsg = res.message || errorMsg;
+                                } catch (e) { }
+                                alert(`❌ ${errorMsg}`);
+                            }
+                        }
+                    };
+                    xhr.send(JSON.stringify(loginData));
+                }
+            });
+
+            // 实时输入验证
+            // 账号实时校验
+            accountInput.addEventListener('input', function () {
+                const account = this.value.trim();
+                if (account.length !== 6 && account.length > 0) {
+                    accountError.textContent = "账号必须为6位";
+                } else {
+                    accountError.textContent = "";
+                }
+            });
+
+            // 密码实时校验（可选，仅提示长度）
+            passwordInput.addEventListener('input', function () {
+                const pwd = this.value;
+                if (pwd.length < 6 && pwd.length > 0) {
+                    passwordError.textContent = "密码至少6位";
+                } else {
+                    passwordError.textContent = "";
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,369 @@
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+     font-family: 'Microsoft YaHei', sans-serif;
+ }
+
+ body {
+     background-color: #f5f7fa;
+     color: #333;
+ }
+
+ /* 头部导航（与首页风格一致） */
+ .header {
+     width: 100%;
+     height: 60px;
+     background-color: #fff;
+     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     padding: 0 50px;
+     position: sticky;
+     top: 0;
+     z-index: 999;
+ }
+
+ .logo {
+     font-size: 24px;
+     font-weight: bold;
+     color: #2d8cf0;
+     cursor: pointer;
+ }
+
+ .nav a {
+     margin: 0 20px;
+     text-decoration: none;
+     color: #666;
+     font-size: 16px;
+     transition: color 0.3s;
+ }
+
+ .nav a:hover,
+ .nav a.active {
+     color: #2d8cf0;
+ }
+
+ .user a {
+     margin-left: 25px;
+     text-decoration: none;
+     color: #666;
+     font-size: 14px;
+ }
+
+ .user a:last-child {
+     color: #2d8cf0;
+     border: 1px solid #2d8cf0;
+     padding: 5px 15px;
+     border-radius: 20px;
+     transition: all 0.3s;
+ }
+
+ .user a:last-child:hover {
+     background-color: #2d8cf0;
+     color: #fff;
+ }
+
+ /* 主容器 */
+ .container {
+     width: 1200px;
+     margin: 20px auto;
+     display: flex;
+     flex-direction: column;
+     gap: 20px;
+ }
+
+ /* 搜索区域优化 */
+ .search-header {
+     background-color: #fff;
+     padding: 20px;
+     border-radius: 12px;
+     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+ }
+
+ .search-title {
+     font-size: 20px;
+     font-weight: 600;
+     margin-bottom: 15px;
+     color: #2d3748;
+ }
+
+ .search-box {
+     display: flex;
+     align-items: center;
+     gap: 10px;
+     position: relative;
+ }
+
+ .search-input-wrap {
+     flex: 1;
+     position: relative;
+ }
+
+ #searchInput {
+     width: 100%;
+     height: 48px;
+     padding: 0 20px;
+     border: 1px solid #e8e8e8;
+     border-radius: 24px;
+     font-size: 16px;
+     outline: none;
+     transition: border-color 0.3s, box-shadow 0.3s;
+ }
+
+ #searchInput:focus {
+     border-color: #2d8cf0;
+     box-shadow: 0 0 0 3px rgba(45, 140, 240, 0.1);
+ }
+
+ .search-icon {
+     position: absolute;
+     right: 20px;
+     top: 50%;
+     transform: translateY(-50%);
+     color: #999;
+ }
+
+ .search-box button {
+     width: 120px;
+     height: 48px;
+     background-color: #2d8cf0;
+     color: #fff;
+     border: none;
+     border-radius: 24px;
+     font-size: 16px;
+     cursor: pointer;
+     transition: background-color 0.3s;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     gap: 8px;
+ }
+
+ .search-box button:hover {
+     background-color: #1e80ff;
+ }
+
+ /* 搜索历史与热门推荐 */
+ .search-hot {
+     display: flex;
+     margin-top: 15px;
+     gap: 20px;
+ }
+
+ .history,
+ .hot-dest {
+     flex: 1;
+ }
+
+ .section-title {
+     font-size: 14px;
+     color: #999;
+     margin-bottom: 10px;
+     display: flex;
+     align-items: center;
+     gap: 8px;
+ }
+
+ .tag-list {
+     display: flex;
+     flex-wrap: wrap;
+     gap: 10px;
+ }
+
+ .tag {
+     padding: 6px 14px;
+     background-color: #f5f7fa;
+     border-radius: 16px;
+     font-size: 14px;
+     color: #666;
+     cursor: pointer;
+     transition: all 0.3s;
+ }
+
+ .tag:hover {
+     background-color: #e8f4ff;
+     color: #2d8cf0;
+ }
+
+ .clear-history {
+     margin-left: auto;
+     color: #2d8cf0;
+     cursor: pointer;
+     font-size: 13px;
+ }
+
+ /* 地图与结果区域 */
+ .map-result {
+     display: flex;
+     gap: 20px;
+     height: 600px;
+ }
+
+ /* 结果筛选栏 */
+ .result-filter {
+     width: 300px;
+     background-color: #fff;
+     border-radius: 12px;
+     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+     padding: 20px;
+     overflow-y: auto;
+ }
+
+ .filter-title {
+     font-size: 18px;
+     font-weight: 600;
+     margin-bottom: 15px;
+     display: flex;
+     align-items: center;
+     gap: 8px;
+ }
+
+ .filter-options {
+     display: flex;
+     flex-wrap: wrap;
+     gap: 8px;
+     margin-bottom: 20px;
+     border-bottom: 1px solid #f0f0f0;
+     padding-bottom: 15px;
+ }
+
+ .filter-tag {
+     padding: 4px 12px;
+     border: 1px solid #e8e8e8;
+     border-radius: 14px;
+     font-size: 13px;
+     cursor: pointer;
+     transition: all 0.3s;
+ }
+
+ .filter-tag.active {
+     border-color: #2d8cf0;
+     color: #2d8cf0;
+     background-color: #e8f4ff;
+ }
+
+ .filter-tag:hover:not(.active) {
+     border-color: #d1d9e6;
+ }
+
+ /* 搜索结果列表 */
+ .result-list {
+     display: flex;
+     flex-direction: column;
+     gap: 15px;
+ }
+
+ .result-item {
+     display: flex;
+     gap: 15px;
+     padding: 15px;
+     border-radius: 8px;
+     transition: background-color 0.3s;
+     cursor: pointer;
+ }
+
+ .result-item:hover {
+     background-color: #fafafa;
+ }
+
+ .result-img {
+     width: 80px;
+     height: 80px;
+     border-radius: 8px;
+     object-fit: cover;
+ }
+
+ .result-info {
+     flex: 1;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+ }
+
+ .result-name {
+     font-size: 16px;
+     font-weight: 600;
+     margin-bottom: 4px;
+     color: #2d3748;
+ }
+
+ .result-address {
+     font-size: 13px;
+     color: #999;
+     margin-bottom: 6px;
+     display: flex;
+     align-items: center;
+     gap: 4px;
+ }
+
+ .result-meta {
+     display: flex;
+     gap: 15px;
+     font-size: 12px;
+     color: #666;
+ }
+
+ .result-score {
+     color: #ff7d00;
+     display: flex;
+     align-items: center;
+     gap: 3px;
+ }
+
+ .no-result {
+     text-align: center;
+     padding: 40px 0;
+     color: #999;
+     font-size: 14px;
+ }
+
+ .no-result i {
+     font-size: 40px;
+     margin-bottom: 10px;
+     color: #e8e8e8;
+ }
+
+ /* 地图容器 */
+ #mapContainer {
+     flex: 1;
+     border-radius: 12px;
+     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+     overflow: hidden;
+ }
+
+ /* 响应式调整 */
+ @media (max-width: 1200px) {
+     .container {
+         width: 95%;
+     }
+ }
+
+ @media (max-width: 768px) {
+     .header {
+         padding: 0 20px;
+     }
+
+     .nav {
+         display: none;
+     }
+
+     .map-result {
+         flex-direction: column;
+         height: auto;
+     }
+
+     .result-filter {
+         width: 100%;
+         height: 300px;
+     }
+
+     #mapContainer {
+         height: 400px;
+     }
+
+     .search-hot {
+         flex-direction: column;
+     }
+ }

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>伴旅 - 开启你的旅行结伴之旅</title>
+    <!-- 引入图标库（旅游相关图标） -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/register.css">
+    <style></style>
+</head>
+
+<body>
+    <div class="register-container">
+        <!-- 品牌标识区域（旅游主题） -->
+        <div class="brand-header">
+            <div class="brand-logo">
+                <i class="fa-solid fa-mountain-sun"></i>
+            </div>
+            <h1 class="brand-name">伴旅</h1>
+            <p class="brand-slogan">陪你走遍山川湖海，遇见同行伙伴</p>
+        </div>
+
+        <form id="registerForm" action="http://localhost:8080/demo/Register" method="post">
+            <!-- 账号（6位限制） -->
+            <div class="form-group">
+                <label for="account">旅行账号</label>
+                <div class="icon-wrapper">
+                    <i class="fa-solid fa-user-tag"></i>
+                </div>
+                <input type="text" id="account" name="account" placeholder="设置6位旅行账号" maxlength="6" required>
+                <span class="error-message" id="accountError"><i class="fa-solid fa-circle-exclamation"></i></span>
+            </div>
+
+            <!-- 用户名 -->
+            <div class="form-group">
+                <label for="username">昵称（旅行中展示）</label>
+                <div class="icon-wrapper">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <input type="text" id="username" name="username" placeholder="输入你的旅行昵称" required
+                    autocomplete="username">
+                <span class="error-message" id="usernameError"><i class="fa-solid fa-circle-exclamation"></i></span>
+            </div>
+
+            <!-- 密码 -->
+            <div class="form-group">
+                <label for="password">登录密码</label>
+                <div class="icon-wrapper">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <input type="password" id="password" name="password" placeholder="设置6位以上密码" required
+                    autocomplete="current-password">
+                <span class="error-message" id="passwordError"><i class="fa-solid fa-circle-exclamation"></i></span>
+            </div>
+
+            <!-- 新增：确认密码 -->
+            <div class="form-group">
+                <label for="confirmPassword">确认密码</label>
+                <div class="icon-wrapper">
+                    <i class="fa-solid fa-lock-open"></i>
+                </div>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="再次输入密码" required
+                    autocomplete="new-password">
+                <span class="error-message" id="confirmPasswordError"><i
+                        class="fa-solid fa-circle-exclamation"></i></span>
+            </div>
+
+            <!-- 手机号 -->
+            <div class="form-group">
+                <label for="phone">联系电话</label>
+                <div class="icon-wrapper">
+                    <i class="fa-solid fa-phone"></i>
+                </div>
+                <input type="tel" id="phone" name="phone" placeholder="输入11位手机号" maxlength="11" required>
+                <span class="error-message" id="phoneError"><i class="fa-solid fa-circle-exclamation"></i></span>
+            </div>
+
+            <!-- 简介 -->
+            <div class="form-group">
+                <label for="introduce">旅行签名（选填）</label>
+                <div class="icon-wrapper">
+                    <i class="fa-solid fa-quote-left"></i>
+                </div>
+                <input type="text" id="introduce" name="introduce" placeholder="一句话介绍你的旅行态度" maxlength="100">
+            </div>
+
+            <button type="submit" class="register-btn">注册伴旅账号</button>
+
+            <!-- 登录链接 + 协议提示 -->
+            <div class="login-link">
+                已有账号？<a href="login.html">立即登录</a>
+            </div>
+            <div class="agreement">
+                点击注册即表示同意<a href="#">《伴旅用户协议》</a>和<a href="#">《隐私政策》</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const registerForm = document.getElementById('registerForm');
+            const accountInput = document.getElementById('account');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const phoneInput = document.getElementById('phone');
+
+            // 错误提示元素
+            const accountError = document.getElementById('accountError');
+            const usernameError = document.getElementById('usernameError');
+            const passwordError = document.getElementById('passwordError');
+            const confirmPasswordError = document.getElementById('confirmPasswordError');
+            const phoneError = document.getElementById('phoneError');
+
+            registerForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                let isValid = true;
+
+                // 获取表单值
+                const account = accountInput.value.trim();
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+                const phone = phoneInput.value.trim();
+                const introduce = document.getElementById('introduce').value.trim();
+
+                // 1. 账号验证（6位）
+                if (account.length !== 6) {
+                    accountError.textContent = "账号必须为6位";
+                    isValid = false;
+                } else {
+                    accountError.textContent = "";
+                }
+
+                // 2. 用户名验证（非空+长度限制）
+                if (username === "") {
+                    usernameError.textContent = "昵称不能为空";
+                    isValid = false;
+                } else if (username.length > 12) {
+                    usernameError.textContent = "昵称不能超过12个字符";
+                    isValid = false;
+                } else {
+                    usernameError.textContent = "";
+                }
+
+                // 3. 密码验证（至少6位）
+                if (password.length < 6) {
+                    passwordError.textContent = "密码至少6位";
+                    isValid = false;
+                } else {
+                    passwordError.textContent = "";
+                }
+
+                // 4. 确认密码验证（与密码一致）
+                if (confirmPassword !== password) {
+                    confirmPasswordError.textContent = "两次密码输入不一致";
+                    isValid = false;
+                } else {
+                    confirmPasswordError.textContent = "";
+                }
+
+                // 5. 手机号验证（11位有效格式）
+                const phoneReg = /^1[3-9]\d{9}$/;
+                if (!phoneReg.test(phone)) {
+                    phoneError.textContent = "请输入有效的11位手机号";
+                    isValid = false;
+                } else {
+                    phoneError.textContent = "";
+                }
+
+                // 验证通过：提交数据
+                if (isValid) {
+                    const userData = {
+                        account: account,
+                        username: username,
+                        password: password,
+                        phone: phone,
+                        introduce: introduce
+                    };
+
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', 'http://localhost:8080/demo/Register');
+                    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                const res = JSON.parse(xhr.responseText);
+                                // 旅游主题注册成功提示
+                                alert(`🎉 注册成功！你的伴旅账号「${res.data}」已生效～ 即刻开启结伴旅行吧！`);
+                                registerForm.reset();
+                                // 跳转至登录页（或首页，根据需求修改）
+                                window.location.href = "login.html";
+                            } else {
+                                let errorMsg = "网络异常，请检查服务器连接后重试";
+                                try {
+                                    const res = JSON.parse(xhr.responseText);
+                                    errorMsg = res.message || errorMsg;
+                                } catch (e) {
+                                    // 解析失败时显示默认错误
+                                }
+                                alert(`❌ 注册失败：${errorMsg}`);
+                            }
+                        }
+                    };
+                    xhr.send(JSON.stringify(userData));
+                }
+            });
+
+            // 实时输入验证（提升交互体验）
+            // 账号实时校验
+            accountInput.addEventListener('input', function () {
+                const account = this.value.trim();
+                if (account.length !== 6 && account.length > 0) {
+                    accountError.textContent = "账号必须为6位";
+                } else {
+                    accountError.textContent = "";
+                }
+            });
+
+            // 确认密码实时校验
+            confirmPasswordInput.addEventListener('input', function () {
+                const confirmPwd = this.value;
+                const pwd = passwordInput.value;
+                if (confirmPwd !== "" && confirmPwd !== pwd) {
+                    confirmPasswordError.textContent = "两次密码输入不一致";
+                } else {
+                    confirmPasswordError.textContent = "";
+                }
+            });
+
+            // 手机号实时校验
+            phoneInput.addEventListener('input', function () {
+                const phone = this.value.trim();
+                const phoneReg = /^1[3-9]\d{9}$/;
+                if (phone.length === 11 && !phoneReg.test(phone)) {
+                    phoneError.textContent = "手机号格式不正确";
+                } else if (phone.length < 11 && phone.length > 0) {
+                    phoneError.textContent = "请输入完整11位手机号";
+                } else {
+                    phoneError.textContent = "";
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

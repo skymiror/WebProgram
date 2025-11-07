@@ -1,0 +1,182 @@
+<html>
+
+<head>
+    <title>伴旅-旅游社交平台</title>
+    <style>
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <!-- 图标库 -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✈️</text></svg>">
+</head>
+
+<body>
+    <!-- 头部导航 -->
+    <div class="header">
+        <div class="logo">伴旅</div>
+        <div class="nav">
+            <a href="main.html">首页</a> <!-- 首页默认激活蓝色 -->
+            <a href="#">目的地</a>
+            <a href="#">旅游攻略</a>
+            <a href="#">去旅行</a>
+            <a href="#">APP</a>
+        </div>
+        <div class="user">
+            <a href="login.html">登录</a>
+            <a href="register.html">注册</a>
+        </div>
+    </div>
+
+    <!-- 轮播 banner -->
+    <div class="banner-wrap">
+        <div class="banner">
+            <div class="date">3/Nov.2025</div>
+            <div class="title">从胜利日的焰火到芬兰湾的日落 | 我的俄罗斯双城记</div>
+            <div class="search">
+                <input type="text" placeholder="搜目的地/攻略/酒店/旅行特价">
+                <button>搜索</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 功能模块 -->
+    <div class="features">
+        <div class="feature-item">
+            <img src="https://via.placeholder.com/30/2d8cf0/ffffff?text=群" alt="攻略群"> <!-- 蓝色图标 -->
+            <span>攻略群 实时交流有问必答</span>
+        </div>
+        <div class="feature-item">
+            <img src="https://via.placeholder.com/30/2d8cf0/ffffff?text=游" alt="当地游">
+            <span>当地游 最地道的玩法体验</span>
+        </div>
+        <div class="feature-item">
+            <img src="https://via.placeholder.com/30/2d8cf0/ffffff?text=自" alt="自由行">
+            <span>自由行 旅行就要更自在</span>
+        </div>
+        <div class="feature-item">
+            <img src="https://via.placeholder.com/30/2d8cf0/ffffff?text=团" alt="跟团游">
+            <span>跟团游 行程透明省心游</span>
+        </div>
+        <div class="feature-item">
+            <img src="https://via.placeholder.com/30/2d8cf0/ffffff?text=酒" alt="订酒店">
+            <span>订酒店 一键全网比价</span>
+        </div>
+    </div>
+
+    <!-- 游记推荐 -->
+    <div class="notes">
+        <div class="notes-nav">
+            <a href="#" class="active">热门游记</a>
+            <a href="#">最新发表</a>
+        </div>
+        <div class="notes-list">
+            <div class="note-item">
+                <img src="./photo/photo3.jpg" alt="游记1">
+                <div class="info">
+                    <div class="title">金秋·重返山西，走进“中国古代建筑宝库”</div>
+                    <div class="desc">2025.10.20
+                        晨8:00从南京出发，自驾九小时，途经石家庄《正定古城》，第二天再出发先游《云冈石窟》后到达山西大同，正式开启山西游。河北，山西，河南，六十岁以上都免票...</div>
+                    <div class="meta">
+                        <span><i class="fas fa-map-marker-alt"></i>山西</span>
+                        <span><i class="fas fa-user"></i>逛鱼儿</span>
+                        <span><i class="fas fa-eye"></i>2562浏览</span>
+                    </div>
+                </div>
+            </div>
+            <div class="note-item">
+                <img src="./photo/photo4.jpg" alt="游记2">
+                <div class="info">
+                    <div class="title">三亚五天四晚，避坑指南+小众玩法</div>
+                    <div class="desc">避开网红打卡地，带你发现三亚真正的美！从海棠湾到亚龙湾，再到天涯镇，小众海滩、本地美食一网打尽...</div>
+                    <div class="meta">
+                        <span><i class="fas fa-map-marker-alt"></i>海南</span>
+                        <span><i class="fas fa-user"></i>浪里小白龙</span>
+                        <span><i class="fas fa-eye"></i>5678浏览</span>
+                    </div>
+                </div>
+            </div>
+            <div class="note-item">
+                <img src="./photo/photo5.jpg" alt="游记3">
+                <div class="info">
+                    <div class="title">西藏自驾318，一场心灵的朝圣之旅</div>
+                    <div class="desc">从成都出发，历时15天，穿越二郎山、折多山、米拉山，打卡稻城亚丁、羊卓雍措、布达拉宫...高反应对、路况分享全攻略...</div>
+                    <div class="meta">
+                        <span><i class="fas fa-map-marker-alt"></i>西藏</span>
+                        <span><i class="fas fa-user"></i>朝圣者</span>
+                        <span><i class="fas fa-eye"></i>12345浏览</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        const bannerImages = [
+            "./photo/photo3.jpg",
+            "./photo/photo2.jpg",
+            "./photo/photo4.jpg",
+            "./photo/photo5.jpg"
+        ];
+        const bannerTitles = [
+            "从胜利日的焰火到芬兰湾的日落 | 我的俄罗斯双城记",
+            "金秋·重返山西，走进“中国古代建筑宝库”",
+            "三亚五天四晚，避坑指南+小众玩法",
+            "西藏自驾318，一场心灵的朝圣之旅"
+        ];
+        const bannerDates = [
+            "3/Nov.2025",
+            "20/Oct.2025",
+            "15/Nov.2025",
+            "5/Oct.2025"
+        ];
+
+        const banner = document.querySelector('.banner');
+        let currentIndex = 0;
+
+        function carousel() {
+            // 更新背景图
+            banner.style.backgroundImage = `url(${bannerImages[currentIndex]})`;
+            banner.style.backgroundSize = "cover";
+            banner.style.backgroundPosition = "center";
+
+            // 更新日期和标题
+            document.querySelector('.banner .date').textContent = bannerDates[currentIndex];
+            document.querySelector('.banner .title').textContent = bannerTitles[currentIndex];
+
+            // 更新索引
+            currentIndex = (currentIndex + 1) % bannerImages.length;
+        }
+
+        // 初始化轮播
+        carousel();
+        setInterval(carousel, 3000); // 延长轮播间隔更舒适
+
+        // 搜索框点击跳转至 search.html
+        const searchInput = document.querySelector('.search input');
+        const searchBtn = document.querySelector('.search button');
+
+        searchInput.addEventListener('click', function () {
+            window.location.href = 'search.html';
+        });
+
+        searchBtn.addEventListener('click', function () {
+            window.location.href = 'search.html';
+        });
+
+        // 导航栏点击激活逻辑（可选，若需要多页面保持激活状态）
+        document.querySelectorAll('.nav a').forEach(link => {
+            link.addEventListener('click', function (e) {
+                // 移除其他链接的激活状态
+                document.querySelectorAll('.nav a').forEach(item => {
+                    item.classList.remove('active');
+                });
+                // 给当前点击链接添加激活状态
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+
+</html>

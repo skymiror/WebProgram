@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>伴旅-地点搜索</title>
+    <!-- 引入高德地图Loader -->
+    <script src="https://webapi.amap.com/loader.js"></script>
+    <!-- 引入图标库（旅游相关图标） -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/search.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <!-- 头部导航（与首页保持一致） -->
+    <div class="header">
+        <div class="logo" onclick="window.location.href='main.html'">伴旅</div>
+        <div class="nav">
+            <a href="main.html">首页</a>
+            <a href="#" class="active">目的地</a>
+            <a href="#">旅游攻略</a>
+            <a href="#">去旅行</a>
+            <a href="#">APP</a>
+        </div>
+        <div class="user">
+            <a href="login.html">登录</a>
+            <a href="register.html">注册</a>
+        </div>
+    </div>
+
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 搜索区域 -->
+        <div class="search-header">
+            <div class="search-title">寻找你的旅行目的地</div>
+            <div class="search-box">
+                <div class="search-input-wrap">
+                    <input type="text" id="searchInput" placeholder="搜目的地/景点/酒店/美食">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+                <button onclick="searchPlace()">
+                    <i class="fas fa-map-marker-alt"></i>
+                    搜索地点
+                </button>
+            </div>
+
+            <!-- 搜索历史与热门推荐 -->
+            <div class="search-hot">
+                <div class="history">
+                    <div class="section-title">
+                        <i class="fas fa-history"></i>
+                        搜索历史
+                        <span class="clear-history" onclick="clearHistory()">清空</span>
+                    </div>
+                    <div class="tag-list" id="historyList">
+                        <!-- 历史记录将通过JS动态添加 -->
+                        <div class="tag">三亚亚龙湾</div>
+                        <div class="tag">西藏布达拉宫</div>
+                        <div class="tag">成都锦里</div>
+                    </div>
+                </div>
+                <div class="hot-dest">
+                    <div class="section-title">
+                        <i class="fas fa-fire"></i>
+                        热门目的地
+                    </div>
+                    <div class="tag-list">
+                        <div class="tag" onclick="selectHot('云南大理')">云南大理</div>
+                        <div class="tag" onclick="selectHot('新疆喀纳斯')">新疆喀纳斯</div>
+                        <div class="tag" onclick="selectHot('青海湖')">青海湖</div>
+                        <div class="tag" onclick="selectHot('厦门鼓浪屿')">厦门鼓浪屿</div>
+                        <div class="tag" onclick="selectHot('西安兵马俑')">西安兵马俑</div>
+                        <div class="tag" onclick="selectHot('张家界')">张家界</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 地图与结果区域 -->
+        <div class="map-result">
+            <!-- 结果筛选与列表 -->
+            <div class="result-filter">
+                <div class="filter-title">
+                    <i class="fas fa-list-alt"></i>
+                    搜索结果
+                </div>
+                <!-- 筛选选项 -->
+                <div class="filter-options">
+                    <div class="filter-tag active" data-type="all">全部</div>
+                    <div class="filter-tag" data-type="scenic">景点</div>
+                    <div class="filter-tag" data-type="hotel">酒店</div>
+                    <div class="filter-tag" data-type="food">美食</div>
+                    <div class="filter-tag" data-type="shopping">购物</div>
+                </div>
+                <!-- 结果列表 -->
+                <div class="result-list" id="resultList">
+                    <!-- 搜索结果将通过JS动态添加 -->
+                    <div class="no-result">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <p>请输入关键词搜索目的地</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 地图容器 -->
+            <div id="mapContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        // 配置高德地图安全密钥和Key
+        window._AMapSecurityConfig = {
+            securityJsCode: "57a8d858895ab2ca5242990b2aac8221",
+        };
+
+        let map, placeSearch;
+        let searchHistory = JSON.parse(localStorage.getItem('travelSearchHistory')) || ['三亚亚龙湾', '西藏布达拉宫', '成都锦里'];
+
+        document.addEventListener('touchstart', function () { }, { passive: true });
+        document.addEventListener('touchmove', function () { }, { passive: true });
+        // 初始化地图
+        AMapLoader.load({
+            key: "19fdb0d1aba014d9920e9840f46cf73d",
+            version: "2.0",
+            plugins: ['AMap.Map', 'AMap.Marker', 'AMap.PlaceSearch', 'AMap.InfoWindow']
+        }).then((AMap) => {
+            // 初始化地图
+            map = new AMap.Map('mapContainer', {
+                zoom: 10,
+                center: [116.397428, 39.90923], // 默认北京
+                touchAction: 'pan-y'
+            });
+
+            // 初始化地点搜索
+            placeSearch = new AMap.PlaceSearch({
+                map: map,
+                pageSize: 10,
+                pageIndex: 1,
+                extensions: 'all' // 返回详细信息
+            });
+
+            // 渲染搜索历史
+            renderHistory();
+
+            // 筛选标签点击事件
+            document.querySelectorAll('.filter-tag').forEach(tag => {
+                tag.addEventListener('click', function () {
+                    document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    // 这里可以添加筛选逻辑
+                });
+            });
+        }).catch(e => {
+            console.error('地图加载失败：', e);
+        });
+
+        // 搜索函数
+        function searchPlace() {
+            const keyword = document.getElementById('searchInput').value.trim();
+            if (!keyword) return;
+
+            // 添加到搜索历史
+            addToHistory(keyword);
+
+            // 执行搜索
+            placeSearch.search(keyword, function (status, result) {
+                if (status === 'complete' && result.poiList.pois.length > 0) {
+                    // 更新地图中心到第一个结果
+                    const firstPoi = result.poiList.pois[0];
+                    map.setCenter(firstPoi.location);
+                    map.setZoom(14);
+
+                    // 渲染搜索结果列表
+                    renderResultList(result.poiList.pois);
+                } else {
+                    // 无结果
+                    document.getElementById('resultList').innerHTML = `
+                        <div class="no-result">
+                            <i class="fas fa-search-times"></i>
+                            <p>未找到与"${keyword}"相关的地点</p>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        // 渲染搜索结果列表
+        function renderResultList(pois) {
+            let html = '';
+            pois.forEach(poi => {
+                // 处理POI类型显示
+                let typeText = '';
+                let typeIcon = '';
+                if (poi.type.includes('景点')) {
+                    typeText = '景点';
+                    typeIcon = 'fas fa-mountain';
+                } else if (poi.type.includes('酒店')) {
+                    typeText = '酒店';
+                    typeIcon = 'fas fa-hotel';
+                } else if (poi.type.includes('餐饮')) {
+                    typeText = '美食';
+                    typeIcon = 'fas fa-utensils';
+                } else if (poi.type.includes('购物')) {
+                    typeText = '购物';
+                    typeIcon = 'fas fa-shopping-bag';
+                } else {
+                    typeText = poi.type;
+                    typeIcon = 'fas fa-map-pin';
+                }
+
+                html += `
+                    <div class="result-item" onclick="focusMarker('${poi.id}')">
+                        <img class="result-img" src="${poi.photos && poi.photos[0] ? poi.photos[0].url : 'https://via.placeholder.com/80x80?text=景点'}" alt="${poi.name}">
+                        <div class="result-info">
+                            <div class="result-name">${poi.name}</div>
+                            <div class="result-address">
+                                <i class="fas fa-map-marker-alt"></i>
+                                ${poi.address || '地址不详'}
+                            </div>
+                            <div class="result-meta">
+                                <div class="result-score">
+                                    <i class="fas fa-star"></i>
+                                    ${poi.score || '暂无评分'}
+                                </div>
+                                <div class="result-type">
+                                    <i class="${typeIcon}"></i>
+                                    ${typeText}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('resultList').innerHTML = html;
+        }
+
+        // 聚焦到地图标记点
+        function focusMarker(poiId) {
+            const marker = map.getAllOverlays('marker').find(m => m.getExtData().poiId === poiId);
+            if (marker) {
+                map.setCenter(marker.getPosition());
+                marker.showInfoWindow();
+            }
+        }
+
+        // 选择热门目的地
+        function selectHot(dest) {
+            document.getElementById('searchInput').value = dest;
+            searchPlace();
+        }
+
+        // 添加到搜索历史
+        function addToHistory(keyword) {
+            // 去重
+            searchHistory = searchHistory.filter(item => item !== keyword);
+            // 添加到开头
+            searchHistory.unshift(keyword);
+            // 限制最多10条
+            if (searchHistory.length > 10) searchHistory.pop();
+            // 保存到本地存储
+            localStorage.setItem('travelSearchHistory', JSON.stringify(searchHistory));
+            // 重新渲染
+            renderHistory();
+        }
+
+        // 渲染搜索历史
+        function renderHistory() {
+            let html = '';
+            searchHistory.forEach(item => {
+                html += `<div class="tag" onclick="selectHot('${item}')">${item}</div>`;
+            });
+            document.getElementById('historyList').innerHTML = html;
+        }
+
+        // 清空搜索历史
+        function clearHistory() {
+            searchHistory = [];
+            localStorage.removeItem('travelSearchHistory');
+            renderHistory();
+        }
+
+        // 监听搜索框回车事件
+        document.getElementById('searchInput').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                searchPlace();
+            }
+        });
+    </script>
+</body>
+
+</html>
