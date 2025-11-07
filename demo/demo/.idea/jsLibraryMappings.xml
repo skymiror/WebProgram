@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="file://$PROJECT_DIR$" libraries="{7bfddb60-08e8-11e9-9b04-53e73bb6408b, a3f714d0-08e6-11e9-8a15-ebf944d7534c, cube, jquery, jquery-3.6.0}" />
+  </component>
+</project>
