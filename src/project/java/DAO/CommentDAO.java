@@ -4,6 +4,7 @@ import Entity.Comment;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public interface CommentDAO {
     // 发布评论（commentId 自增，无需手动设置）
@@ -21,4 +22,6 @@ public interface CommentDAO {
      * 根据parentId查询子评论列表（按时间升序）
      */
     List<Comment> selectByParentId(Integer parentId) throws SQLException;
+
+    List<Map<String, Object>> selectCommentsByTipIdFromView(String C_TipId) throws SQLException;
 }

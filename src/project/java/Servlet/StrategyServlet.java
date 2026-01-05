@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/Strategy")
+@WebServlet("/StrategyList")
 public class StrategyServlet extends HttpServlet {
     private final StrategyService strategyService = new StrategyServiceImpl();
     private final RouteService routeService = new RouteServiceImpl();

@@ -183,28 +183,33 @@ public class StrategyDAOImpl implements StrategyDAO {
     }
 
     @Override
-    public List<Strategy> selectByTitleKeyword(String keyword) throws SQLException {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        List<Strategy> strategies = new ArrayList<>();
-        try {
-            conn = dbUtil.getConnection();
-            String sql = "SELECT tipid, title, content FROM strategy WHERE title LIKE ?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, "%" + keyword + "%");
-            rs = pstmt.executeQuery();
+    public List<Strategy> searchByPlaceKeyword(String placeKeyword) throws SQLException {
+        List<Strategy> strategyList = new ArrayList<>();
+        // 核心SQL：查询之前创建的v_strategy_search视图，模糊匹配地点名称
+        String sql = "SELECT DISTINCT tipId, title, content, coverImagePath, createTime " +
+                "FROM v_strategy_search " + // 直接查询视图，无需手动关联表
+                "WHERE placeName LIKE ? " + // 模糊匹配地点关键词
+                "ORDER BY createTime DESC"; // 新攻略在前
+
+        try (Connection conn = dbUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // 设置参数：前后加%实现模糊搜索（例如"三亚" → "%三亚%"，匹配"三亚亚龙湾"、"三亚湾"等）
+            pstmt.setString(1, "%" + placeKeyword + "%");
+            ResultSet rs = pstmt.executeQuery();
+
+            // 解析结果集，封装为Strategy实体
             while (rs.next()) {
                 Strategy strategy = new Strategy();
-                strategy.setTipId(rs.getString("tipid"));
+                strategy.setTipId(rs.getString("tipId"));
                 strategy.setTitle(rs.getString("title"));
                 strategy.setContent(rs.getString("content"));
-                strategies.add(strategy);
+                strategy.setCoverImagePath(rs.getString("coverImagePath"));
+                strategy.setCreateTime(rs.getTimestamp("createTime"));
+                strategyList.add(strategy);
             }
-            return strategies;
-        } finally {
-            DBUtil.close(conn, pstmt, rs);
         }
+        return strategyList;
     }
 
     public List<Strategy> selectByKeywordWithLambda(String keyword) throws SQLException {

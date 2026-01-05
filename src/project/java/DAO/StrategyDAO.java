@@ -16,7 +16,7 @@ public interface StrategyDAO {
     int updateStrategy(String tipId, String newTitle, String newContent) throws SQLException;
 
     //查询攻略（通过关键字）
-    List<Strategy> selectByTitleKeyword(String keyword) throws SQLException;
+    List<Strategy> searchByPlaceKeyword(String placeKeyword) throws SQLException;
 
     // 删除攻略
     int deleteByPostId(String tipId) throws SQLException;
